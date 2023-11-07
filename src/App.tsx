@@ -1,8 +1,8 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined
+  SwapOutlined,
+  UserOutlined
 } from '@ant-design/icons';
 import { Button, Flex, Layout, Menu, Space, theme } from 'antd';
 import React, { useState } from 'react';
@@ -62,7 +62,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout className="container">
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
@@ -78,7 +78,7 @@ const App: React.FC = () => {
             },
             {
               key: '2',
-              icon: <VideoCameraOutlined />,
+              icon: <SwapOutlined />,
               label: 'Make transactions',
               onClick: () => setActiveTab(TabNames.InteractiveForm)
             }
