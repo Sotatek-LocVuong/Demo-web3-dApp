@@ -7,9 +7,9 @@ import {
 import { Button, Flex, Layout, Menu, Space, theme } from 'antd';
 import React, { useState } from 'react';
 import Web3 from 'web3';
-import JsonERC20Abi from './constants/abi/ERC20_ABI.json';
-import InteractiveForm from './layout/interactive-form';
-import WalletInformation from './layout/wallet-information-tab';
+// import JsonERC20Abi from './constants/abi/ERC20_ABI.json';
+import TransactionForm from './layout/transaction-form';
+import WalletInformation from './layout/wallet-information';
 import { TabNames, TokenBalanceType } from './models';
 
 const { Header, Sider, Content } = Layout;
@@ -30,10 +30,13 @@ const App: React.FC = () => {
       await (window as any)?.ethereum.request({
         method: 'eth_requestAccounts'
       });
-      const web3 = new Web3((window as any)?.ethereum);
+      const web3 = new Web3(
+        (window as any)?.ethereum ||
+          'https://endpoints.omniatech.io/v1/bsc/testnet/public'
+      );
+
       const accounts = await web3.eth.getAccounts();
       const balance = await web3.eth.getBalance(accounts[0]);
-      // const tokenName = await web3.eth.getCoinbase();
       if (accounts[0]) {
         setIsConnected(true);
         setWalletAddress(accounts[0]);
@@ -46,16 +49,25 @@ const App: React.FC = () => {
         ]);
       }
 
-      const GBCAddress = '0xBfa64AB5dbdA007E3d4FB3a57A32C799BFDe13f9';
+      // const gbcAddress = '0xcFf0cf546537BD3fdcaacdE516857c41F188643f';
+      // const gbcAddress = '0xBfa64AB5dbdA007E3d4FB3a57A32C799BFDe13f9';
       // const GBCAddress = process.env.GBC_CONTRACT_ADDRESS;
-      console.log('accounts', accounts, balance, GBCAddress);
-      const GBCContract = new web3.eth.Contract(JsonERC20Abi, GBCAddress);
-      const gbcBalance = await (GBCContract.methods.balanceOf as any)(
-        accounts[0]
-      ).call();
+      // console.log('accounts', accounts, balance, gbcAddress);
+
+      // const gbcContract = new web3.eth.Contract(
+      //   JsonERC20Abi,
+      //   gbcAddress
+      // ) as any;
+
+      // gbcContract.methods
+      //   .balanceOf('0xECFb17b1b4D256e6F59a52FAC8f486CE6639f7eb')
+      //   .call()
+      //   .then(function (result: any) {
+      //     console.log({ result });
+      //   });
       // const gbcBalance = await GBCContract.methods.balanceOf(accounts[0]).call();
 
-      console.log('gbcBalance', gbcBalance);
+      console.log('balance', balance);
     } catch (err) {
       console.log(err);
     }
@@ -120,7 +132,7 @@ const App: React.FC = () => {
           {activeTab === TabNames.WalletInfo ? (
             <WalletInformation address={walletAddress} balances={tokenList} />
           ) : (
-            <InteractiveForm />
+            <TransactionForm walletAddress={walletAddress} />
           )}
         </Content>
       </Layout>

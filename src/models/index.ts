@@ -13,3 +13,8 @@ export enum TokenType {
   Native = 'Native',
   Other = 'Other'
 }
+
+export type TransactionFormFieldsType = {
+  address: string;
+  amount: number;
+};
