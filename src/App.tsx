@@ -27,13 +27,11 @@ const App: React.FC = () => {
 
   const onConnectWallet = async () => {
     try {
+      const provider = process.env.REACT_APP_BSC_TESTNET_PROVIDER;
       await (window as any)?.ethereum.request({
         method: 'eth_requestAccounts'
       });
-      const web3 = new Web3(
-        (window as any)?.ethereum ||
-          'https://endpoints.omniatech.io/v1/bsc/testnet/public'
-      );
+      const web3 = new Web3((window as any)?.ethereum || provider);
 
       const accounts = await web3.eth.getAccounts();
       const balance = await web3.eth.getBalance(accounts[0]);
@@ -130,7 +128,10 @@ const App: React.FC = () => {
           }}
         >
           {activeTab === TabNames.WalletInfo ? (
-            <WalletInformation address={walletAddress} balances={tokenList} />
+            <WalletInformation
+              walletAddress={walletAddress}
+              balances={tokenList}
+            />
           ) : (
             <TransactionForm walletAddress={walletAddress} />
           )}

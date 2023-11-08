@@ -22,11 +22,13 @@ const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
   const [form] = Form.useForm<TransactionFormFieldsType>();
 
   const onConfirmTransfer = async () => {
-    console.log('values', form.getFieldsValue());
     const { address: toAddress, amount } = form.getFieldsValue();
-    const web3 = new Web3(
-      'https://endpoints.omniatech.io/v1/bsc/testnet/public'
-    );
+    const tBSCProvider = process.env.REACT_APP_BSC_TESTNET_PROVIDER;
+    const tBscContractAddress =
+      process.env.REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS;
+    const privateKey = process.env.REACT_APP_METAMASK_PRIVATE_KEY || '';
+
+    const web3 = new Web3(tBSCProvider);
 
     const balance = await web3.eth.getBalance(walletAddress);
     if (amount > +web3.utils.fromWei(balance, 'ether')) {
@@ -36,7 +38,7 @@ const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
 
     const contract = new web3.eth.Contract(
       JsonERC20Abi,
-      '0xaa25Aa7a19f9c426E07dee59b12f944f4d9f1DD3'
+      tBscContractAddress
     ) as any;
 
     const formatedAmount = web3.utils.toWei(amount, 'ether');
@@ -49,9 +51,6 @@ const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
       gasPrice: await web3.eth.getGasPrice(),
       data: contract.methods.transfer(toAddress, formatedAmount).encodeABI()
     };
-
-    const privateKey =
-      'bcddc25d1b9393b0759ed814373aac6a411127ce1cfeec99174806e9d7eaa2d9';
 
     const signature = await web3.eth.accounts.signTransaction(tx, privateKey);
     await web3.eth
