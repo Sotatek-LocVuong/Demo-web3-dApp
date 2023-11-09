@@ -1,1 +1,14 @@
-export const GBCContract = '0xBfa64AB5dbdA007E3d4FB3a57A32C799BFDe13f9';
+import { IWalletInfo } from '../models';
+import { MetaMaskIcon, WalletConnectIcon } from '../assets';
+import { ConnectorKeys } from '../web3/connectors';
+
+export const WalletOptions: IWalletInfo[] = [
+  {
+    icon: MetaMaskIcon,
+    walletName: ConnectorKeys.appMetaMask
+  },
+  {
+    icon: WalletConnectIcon,
+    walletName: ConnectorKeys.appWalletConnect
+  }
+];

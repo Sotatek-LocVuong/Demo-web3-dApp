@@ -1,0 +1,12 @@
+.cardContainer {
+    width: 200px;
+    /* height: 240px !important; */
+    border: 1px solid #000;
+}
+
+.cardContainer > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}

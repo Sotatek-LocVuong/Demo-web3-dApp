@@ -48,7 +48,7 @@ const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
     try {
       setIsLoading(true);
       const { address: toAddress, amount } = form.getFieldsValue();
-      const tBSCProvider = process.env.REACT_APP_BSC_TESTNET_PROVIDER;
+      const tBSCProvider = process.env.REACT_APP_BSC_TESTNET_RPC_URL;
 
       const web3 = new Web3((window as any).ethereum || tBSCProvider);
       const balance = await web3.eth.getBalance(walletAddress);
