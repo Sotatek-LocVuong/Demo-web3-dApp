@@ -76,23 +76,6 @@ const MainLayout: React.FC = () => {
     }
   }, [account, provider]);
 
-  const getAddress = async () => {
-    if (!provider) {
-      return '';
-    }
-
-    try {
-      const signer = provider?.getSigner();
-      await signer.getAddress();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getAddress();
-  }, []);
-
   return (
     <Layout className="container">
       <Sider trigger={null} collapsible collapsed={collapsed}>

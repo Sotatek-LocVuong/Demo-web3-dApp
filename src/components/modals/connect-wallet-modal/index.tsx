@@ -11,11 +11,12 @@ export const ConnectWalletModal: React.FC<IConnectWalletModal> = ({
   onClose,
   ...otherProps
 }) => {
-  const { connectToWallet } = useWalletConnection();
+  const { connectToWallet, signMessageWithWallet } = useWalletConnection();
 
   const handleConnectWallet = async (connectorKey: ConnectorKeys) => {
     onClose();
     await connectToWallet(connectorKey);
+    await signMessageWithWallet(connectorKey);
   };
 
   return (

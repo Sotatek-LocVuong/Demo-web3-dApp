@@ -1,16 +1,20 @@
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
+import { isAddress } from 'web3-validator';
 import { useAppDispatch } from '../store';
 import { walletActions } from '../store/slides';
 import { formatBalance } from '../utils';
 import { REACT_APP_BSC_DECIMAL } from '../web3/constants';
-import { isAddress } from 'web3-validator';
 
 export const useNativeContract = () => {
   const { account, provider, isActive } = useWeb3React();
   const dispatch = useAppDispatch();
 
-  // const getTokenBalance = async (wallet?: ConnectorKeys) => {
+  // const appContract = useContract({
+  //   abi: BEP20Abi,
+  //   contractAddress: REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS ?? ''
+  // });
+
   const getTokenBalance = async () => {
     const rawBalance = await provider?.getBalance(account || '');
     const balanceInWei = new BigNumber((rawBalance ?? 0)?.toString());
