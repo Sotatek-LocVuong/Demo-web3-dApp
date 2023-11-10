@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 export const detectCurrentProvider = () => {
   let provider;
 
@@ -13,4 +15,15 @@ export const detectCurrentProvider = () => {
   }
 
   return provider;
+};
+
+export const formatBalance = (
+  balanceInWei: BigNumber,
+  decimal: string | number
+) => {
+  const balanceInEther = balanceInWei.dividedBy(
+    new BigNumber(10).exponentiatedBy(Number(decimal))
+  );
+
+  return balanceInEther.toFormat();
 };

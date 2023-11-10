@@ -71,10 +71,27 @@ const MainLayout: React.FC = () => {
   useEffect(() => {}, [isActive]);
   useEffect(() => {
     dispatch(walletActions.setUserAddress(account ?? null));
-    if (account) {
+    if (account && provider) {
       getTokenBalance();
     }
-  }, [account]);
+  }, [account, provider]);
+
+  const getAddress = async () => {
+    if (!provider) {
+      return '';
+    }
+
+    try {
+      const signer = provider?.getSigner();
+      await signer.getAddress();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAddress();
+  }, []);
 
   return (
     <Layout className="container">
@@ -140,7 +157,7 @@ const MainLayout: React.FC = () => {
               balances={tokenList}
             />
           ) : (
-            <TransactionForm walletAddress={userAddress || ''} />
+            <TransactionForm />
           )}
         </Content>
       </Layout>

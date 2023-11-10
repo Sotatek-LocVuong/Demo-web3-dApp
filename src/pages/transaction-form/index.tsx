@@ -1,9 +1,10 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Spin, notification } from 'antd';
 import React, { useState } from 'react';
 import Web3 from 'web3';
 import { isAddress } from 'web3-validator';
+import { useNativeContract } from '../../hooks';
 import { TransactionFormFieldsType } from '../../models';
-import { LoadingOutlined } from '@ant-design/icons';
 
 const layout = {
   labelCol: { span: 8 },
@@ -14,14 +15,14 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 }
 };
 
-interface IProps {
-  walletAddress: string;
-}
+interface IProps {}
 
-const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
+const TransactionForm: React.FC<IProps> = () => {
   const [form] = Form.useForm<TransactionFormFieldsType>();
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { sendNativeTransaction } = useNativeContract();
 
   const openNotification = (
     type: 'success' | 'failed',
@@ -48,27 +49,12 @@ const TransactionForm: React.FC<IProps> = ({ walletAddress }: IProps) => {
     try {
       setIsLoading(true);
       const { address: toAddress, amount } = form.getFieldsValue();
-      const tBSCProvider = process.env.REACT_APP_BSC_TESTNET_RPC_URL;
-
-      const web3 = new Web3((window as any).ethereum || tBSCProvider);
-      const balance = await web3.eth.getBalance(walletAddress);
-      if (amount > +web3.utils.fromWei(balance, 'ether')) {
-        openNotification('failed', 'Invalid amount!');
-        form.resetFields();
-        return;
-      }
-
-      const formatedAmount = web3.utils.toWei(amount, 'ether');
-      const receipt = await web3.eth.sendTransaction({
-        from: walletAddress,
-        to: toAddress,
-        value: formatedAmount
-      });
+      const formatedAmount = Web3.utils.toWei(amount, 'ether');
+      const receipt = await sendNativeTransaction(toAddress, formatedAmount);
 
       if (receipt) {
         openNotification('success');
       }
-      console.log('receipt', receipt);
 
       form.resetFields();
     } catch (error) {
