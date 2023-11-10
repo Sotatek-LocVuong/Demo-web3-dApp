@@ -1,19 +1,56 @@
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { isAddress } from 'web3-validator';
 import { useAppDispatch } from '../store';
 import { walletActions } from '../store/slides';
 import { formatBalance } from '../utils';
-import { REACT_APP_BSC_DECIMAL } from '../web3/constants';
+import {
+  ERC20Abi,
+  REACT_APP_BSC_DECIMAL,
+  REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS
+} from '../web3/constants';
+import { isAddress } from 'web3-validator';
+import { useContract } from './useContract';
+import { ethers } from 'ethers';
 
 export const useNativeContract = () => {
   const { account, provider, isActive } = useWeb3React();
   const dispatch = useAppDispatch();
 
-  // const appContract = useContract({
-  //   abi: BEP20Abi,
-  //   contractAddress: REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS ?? ''
-  // });
+  const appContract = useContract({
+    abi: ERC20Abi,
+    contractAddress: REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS ?? ''
+  });
+
+  const getNativeAllowance = async (spender: string) => {
+    try {
+      if (!isAddress(spender)) {
+        throw new Error('Invalid spender!');
+      }
+
+      const allowance = await appContract?.allowance(account, spender);
+      console.log('Allowance:', allowance.toNumber());
+    } catch (error: any) {
+      throw new Error(error?.message);
+    }
+  };
+
+  const handleNativeApproval = async (spender: string) => {
+    try {
+      if (!isAddress(spender)) {
+        throw new Error('Invalid spender!');
+      }
+
+      const tx = await appContract?.approve(
+        spender,
+        ethers.utils.parseUnits('100', 'ether')
+      );
+      await tx.wait();
+
+      console.log('Approved successfully!');
+    } catch (error: any) {
+      throw new Error(error?.message);
+    }
+  };
 
   const getTokenBalance = async () => {
     const rawBalance = await provider?.getBalance(account || '');
@@ -53,6 +90,8 @@ export const useNativeContract = () => {
 
   return {
     getTokenBalance,
-    sendNativeTransaction
+    sendNativeTransaction,
+    getNativeAllowance,
+    handleNativeApproval
   };
 };
