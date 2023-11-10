@@ -28,7 +28,7 @@ import {
   REACT_APP_BSC_TESTNET_RPC_URL,
   REACT_APP_GBC_CONTRACT_ADDRESS
 } from '../../web3/constants';
-import { useNativeContract } from '../../hooks/useNativeContract';
+import { useNativeContract } from '../../web3/hooks/useNativeContract';
 
 const { Header, Sider, Content } = Layout;
 

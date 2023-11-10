@@ -3,7 +3,7 @@ import { IConnectWalletModal } from '../../../models';
 import { WalletItem } from '../../cards/wallet-item';
 import styles from './style.module.css';
 import { ConnectorKeys } from '../../../web3/connectors';
-import { useWalletConnection } from '../../../hooks/useConnectWallet';
+import { useWalletConnection } from '../../../web3/hooks/useConnectWallet';
 
 export const ConnectWalletModal: React.FC<IConnectWalletModal> = ({
   wallets,

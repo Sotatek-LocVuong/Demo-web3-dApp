@@ -1,13 +1,13 @@
 import { useWeb3React } from '@web3-react/core';
 import BigNumber from 'bignumber.js';
-import { useAppDispatch } from '../store';
-import { walletActions } from '../store/slides';
-import { formatBalance } from '../utils';
+import { useAppDispatch } from '../../store';
+import { walletActions } from '../../store/slides';
+import { formatBalance } from '../../utils';
 import {
   ERC20Abi,
   REACT_APP_BSC_DECIMAL,
   REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS
-} from '../web3/constants';
+} from '../constants';
 import { isAddress } from 'web3-validator';
 import { useContract } from './useContract';
 import { ethers } from 'ethers';
@@ -21,6 +21,9 @@ export const useNativeContract = () => {
     contractAddress: REACT_APP_BSC_TESTNET_CONTRACT_ADDRESS ?? ''
   });
 
+  /**
+   * @Todo need to be checked
+   */
   const getNativeAllowance = async (spender: string) => {
     try {
       if (!isAddress(spender)) {
@@ -34,6 +37,9 @@ export const useNativeContract = () => {
     }
   };
 
+  /**
+   * @Todo need to be checked
+   */
   const handleNativeApproval = async (spender: string) => {
     try {
       if (!isAddress(spender)) {

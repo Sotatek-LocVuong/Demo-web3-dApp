@@ -1,16 +1,16 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useCallback } from 'react';
-import { useAppDispatch } from '../store';
-import { walletActions } from '../store/slides';
-import { ConnectorKeys, connectors } from '../web3/connectors';
+import { useAppDispatch } from '../../store';
+import { walletActions } from '../../store/slides';
+import { ConnectorKeys, connectors } from '../connectors';
 import {
   REACT_APP_BLOCK_EXPLORER_URL,
   REACT_APP_BSC_TESTNET_CHAIN_ID,
   REACT_APP_BSC_TESTNET_RPC_URL,
   REACT_APP_MESSAGE_FOR_SIGNING,
   REACT_APP_NETWORK_NAME
-} from '../web3/constants';
+} from '../constants';
 
 export const useWalletConnection = () => {
   const { connector: appConnector } = useWeb3React();

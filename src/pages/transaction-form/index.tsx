@@ -3,8 +3,8 @@ import { Button, Form, Input, Spin, notification } from 'antd';
 import React, { useState } from 'react';
 import Web3 from 'web3';
 import { isAddress } from 'web3-validator';
-import { useNativeContract } from '../../hooks';
 import { TransactionFormFieldsType } from '../../models';
+import { useNativeContract } from '../../web3/hooks';
 
 const layout = {
   labelCol: { span: 8 },
